@@ -13,23 +13,19 @@ METRIC_EPS = 1e-6
 
 
 def dim_zero_cat(x: Union[Tensor, List[Tensor]]) -> Tensor:
-    x = x if isinstance(x, (list, tuple)) else [x]
-    x = [y.unsqueeze(0) if y.numel() == 1 and y.ndim == 0 else y for y in x]
-    if not x:  # empty list
-        raise ValueError("No samples to concatenate")
-    return torch.cat(x, dim=0)
+    pass
 
 
 def dim_zero_sum(x: Tensor) -> Tensor:
-    return torch.sum(x, dim=0)
+    pass
 
 
 def dim_zero_mean(x: Tensor) -> Tensor:
-    return torch.mean(x, dim=0)
+    pass
 
 
 def _flatten(x: Sequence) -> list:
-    return [item for sublist in x for item in sublist]
+    pass
 
 
 to_onehot = jax.nn.one_hot
@@ -123,7 +119,7 @@ def to_categorical(x: Tensor, argmax_dim: int = 1) -> Tensor:
         >>> to_categorical(x)
         tensor([1, 0])
     """
-    return torch.argmax(x, dim=argmax_dim)
+    pass
 
 
 def get_num_classes(
@@ -141,20 +137,7 @@ def get_num_classes(
     Return:
         An integer that represents the number of classes.
     """
-    num_target_classes = int(target.max().detach().item() + 1)
-    num_pred_classes = int(preds.max().detach().item() + 1)
-    num_all_classes = max(num_target_classes, num_pred_classes)
-
-    if num_classes is None:
-        num_classes = num_all_classes
-    elif num_classes != num_all_classes:
-        rank_zero_warn(
-            f"You have set {num_classes} number of classes which is"
-            f" different from predicted ({num_pred_classes}) and"
-            f" target ({num_target_classes}) number of classes",
-            RuntimeWarning,
-        )
-    return num_classes
+    pass
 
 
 def apply_to_collection(
@@ -187,35 +170,7 @@ def apply_to_collection(
         >>> apply_to_collection(dict(abc=123), dtype=int, function=lambda x: x ** 2)
         {'abc': 15129}
     """
-    elem_type = type(data)
-
-    # Breaking condition
-    if isinstance(data, dtype) and (
-        wrong_dtype is None or not isinstance(data, wrong_dtype)
-    ):
-        return function(data, *args, **kwargs)
-
-    # Recursively apply to collection items
-    if isinstance(data, Mapping):
-        return elem_type(
-            {
-                k: apply_to_collection(v, dtype, function, *args, **kwargs)
-                for k, v in data.items()
-            }
-        )
-
-    if isinstance(data, tuple) and hasattr(data, "_fields"):  # named tuple
-        return elem_type(
-            *(apply_to_collection(d, dtype, function, *args, **kwargs) for d in data)
-        )
-
-    if isinstance(data, Sequence) and not isinstance(data, str):
-        return elem_type(
-            [apply_to_collection(d, dtype, function, *args, **kwargs) for d in data]
-        )
-
-    # data is neither of dtype, nor a collection
-    return data
+    pass
 
 
 def get_group_indexes(indexes: Tensor) -> List[Tensor]:
@@ -233,13 +188,4 @@ def get_group_indexes(indexes: Tensor) -> List[Tensor]:
         >>> get_group_indexes(indexes)
         [tensor([0, 1, 2]), tensor([3, 4, 5, 6])]
     """
-
-    res: dict = {}
-    for i, _id in enumerate(indexes):
-        _id = _id.item()
-        if _id in res:
-            res[_id] += [i]
-        else:
-            res[_id] = [i]
-
-    return [tensor(x, dtype=torch.long) for x in res.values()]
+    pass

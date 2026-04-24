@@ -28,28 +28,11 @@ def _flatten_names_helper(
 
 
 def _get_name(obj) -> str:
-    if hasattr(obj, "name") and obj.name:
-        return obj.name
-    elif hasattr(obj, "__name__") and obj.__name__:
-        return _lower_snake_case(obj.__name__)
-    elif hasattr(obj, "__class__") and obj.__class__.__name__:
-        return _lower_snake_case(obj.__class__.__name__)
-    else:
-        raise ValueError(f"Could not get name for: {obj}")
+    pass
 
 
 def _lower_snake_case(s: str) -> str:
-    s = re.sub(r"(?<!^)(?=[A-Z])", "_", s).lower()
-    parts = s.split("_")
-    output_parts = []
-
-    for i in range(len(parts)):
-        if i == 0 or len(parts[i - 1]) > 1:
-            output_parts.append(parts[i])
-        else:
-            output_parts[-1] += parts[i]
-
-    return "_".join(output_parts)
+    pass
 
 
 def _unique_name(
@@ -80,8 +63,4 @@ def _unique_names(
     *,
     existing_names: tp.Optional[tp.Set[str]] = None,
 ) -> tp.Iterable[str]:
-    if existing_names is None:
-        existing_names = set()
-
-    for name in names:
-        yield _unique_name(existing_names, name)
+    pass

@@ -385,35 +385,4 @@ def stat_scores(
         tensor([2, 2, 6, 2, 4])
 
     """
-    if reduce not in ["micro", "macro", "samples"]:
-        raise ValueError(f"The `reduce` {reduce} is not valid.")
-
-    if mdmc_reduce not in [None, "samplewise", "global"]:
-        raise ValueError(f"The `mdmc_reduce` {mdmc_reduce} is not valid.")
-
-    if reduce == "macro" and (not num_classes or num_classes < 1):
-        raise ValueError(
-            "When you set `reduce` as 'macro', you have to provide the number of classes."
-        )
-
-    if (
-        num_classes
-        and ignore_index is not None
-        and (not 0 <= ignore_index < num_classes or num_classes == 1)
-    ):
-        raise ValueError(
-            f"The `ignore_index` {ignore_index} is not valid for inputs with {num_classes} classes"
-        )
-
-    tp, fp, tn, fn = _stat_scores_update(
-        preds,
-        target,
-        reduce=reduce,
-        mdmc_reduce=mdmc_reduce,
-        top_k=top_k,
-        threshold=threshold,
-        num_classes=num_classes,
-        multiclass=multiclass,
-        ignore_index=ignore_index,
-    )
-    return _stat_scores_compute(tp, fp, tn, fn)
+    pass

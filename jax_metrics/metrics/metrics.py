@@ -59,10 +59,7 @@ class Metrics(Metric):
         return outputs
 
     def slice(self, **kwargs: types.IndexLike) -> "Metrics":
-        metrics = {
-            name: metric.index_into(**kwargs) for name, metric in self.metrics.items()
-        }
-        return self.replace(metrics=metrics)
+        pass
 
     def merge(self: M, other: M) -> M:
         return type(self)(
@@ -73,9 +70,7 @@ class Metrics(Metric):
         )
 
     def reduce(self: M) -> M:
-        return type(self)(
-            metrics={name: metric.reduce() for name, metric in self.metrics.items()}
-        )
+        pass
 
 
 class AuxMetrics(SumMetric):
@@ -120,7 +115,7 @@ class AuxMetrics(SumMetric):
         return {name: self.totals[name] / self.counts[name] for name in self.totals}
 
     def compute_logs(self) -> tp.Dict[str, jax.Array]:
-        return self.compute()
+        pass
 
     def __call__(self: A, aux_values: tp.Any) -> tp.Tuple[tp.Dict[str, jax.Array], A]:
         return super().__call__(aux_values=aux_values)

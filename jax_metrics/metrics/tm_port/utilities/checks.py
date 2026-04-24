@@ -13,10 +13,7 @@ from jax_metrics.metrics.tm_port.utilities.enums import DataType
 
 def _check_same_shape(preds: Tensor, target: Tensor) -> None:
     """Check that predictions and target have the same shape, else raise error."""
-    if preds.shape != target.shape:
-        raise RuntimeError(
-            "Predictions and targets are expected to have the same shape"
-        )
+    pass
 
 
 def _is_floating_point(x: Tensor) -> bool:
@@ -492,35 +489,7 @@ def _input_format_classification_one_hot(
         preds: one hot tensor of shape [num_classes, -1] with predicted target
         target: one hot tensors of shape [num_classes, -1] with true target
     """
-    if preds.ndim not in (target.ndim, target.ndim + 1):
-        raise ValueError(
-            "preds and target must have same number of dimensions, or one additional dimension for preds"
-        )
-
-    if preds.ndim == target.ndim + 1:
-        # multi class probabilities
-        preds = torch.argmax(preds, dim=1)
-
-    if (
-        preds.ndim == target.ndim
-        and preds.dtype in (torch.long, torch.int)
-        and num_classes > 1
-        and not multilabel
-    ):
-        # multi-class
-        preds = to_onehot(preds, num_classes=num_classes)
-        target = to_onehot(target, num_classes=num_classes)
-
-    elif preds.ndim == target.ndim and preds.is_floating_point():
-        # binary or multilabel probabilities
-        preds = (preds >= threshold).long()
-
-    # transpose class as first dim and reshape
-    if preds.ndim > 1:
-        preds = preds.transpose(1, 0)
-        target = target.transpose(1, 0)
-
-    return preds.reshape(num_classes, -1), target.reshape(num_classes, -1)
+    pass
 
 
 def _check_retrieval_functional_inputs(
@@ -544,17 +513,7 @@ def _check_retrieval_functional_inputs(
         preds: as torch.float32
         target: as torch.long if not floating point else torch.float32
     """
-    if preds.shape != target.shape:
-        raise ValueError("`preds` and `target` must be of the same shape")
-
-    if not preds.numel() or not preds.size():
-        raise ValueError(
-            "`preds` and `target` must be non-empty and non-scalar tensors"
-        )
-
-    return _check_retrieval_target_and_prediction_types(
-        preds, target, allow_non_binary_target=allow_non_binary_target
-    )
+    pass
 
 
 def _check_retrieval_inputs(
@@ -580,22 +539,7 @@ def _check_retrieval_inputs(
         preds: as torch.float32
         target: as torch.long
     """
-    if indexes.shape != preds.shape or preds.shape != target.shape:
-        raise ValueError("`indexes`, `preds` and `target` must be of the same shape")
-
-    if not indexes.numel() or not indexes.size():
-        raise ValueError(
-            "`indexes`, `preds` and `target` must be non-empty and non-scalar tensors",
-        )
-
-    if indexes.dtype is not torch.long:
-        raise ValueError("`indexes` must be a tensor of long integers")
-
-    preds, target = _check_retrieval_target_and_prediction_types(
-        preds, target, allow_non_binary_target=allow_non_binary_target
-    )
-
-    return indexes.long().flatten(), preds, target
+    pass
 
 
 def _check_retrieval_target_and_prediction_types(
@@ -615,22 +559,4 @@ def _check_retrieval_target_and_prediction_types(
             If ``preds`` and ``target`` don't have the same shape, if they are empty
             or not of the correct ``dtypes``.
     """
-    if target.dtype not in (
-        torch.bool,
-        torch.long,
-        torch.int,
-    ) and not torch.is_floating_point(target):
-        raise ValueError("`target` must be a tensor of booleans, integers or floats")
-
-    if not preds.is_floating_point():
-        raise ValueError("`preds` must be a tensor of floats")
-
-    if not allow_non_binary_target and (target.max() > 1 or target.min() < 0):
-        raise ValueError("`target` must contain `binary` values")
-
-    target = (
-        target.float().flatten()
-        if target.is_floating_point()
-        else target.long().flatten()
-    )
-    return preds.float().flatten(), target
+    pass

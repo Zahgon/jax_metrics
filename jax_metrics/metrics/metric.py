@@ -143,7 +143,7 @@ class Metric(Pytree):
         Returns:
             A IndexedMetric instance
         """
-        return IndexedMetric(self, kwargs)
+        pass
 
     def rename_arguments(self: M, **kwargs: str) -> "RenameArguments[M]":
         """
@@ -164,7 +164,7 @@ class Metric(Pytree):
         Returns:
             A RenameArguments instance
         """
-        return RenameArguments(self, kwargs)
+        pass
 
 
 class SumMetric(Metric):
@@ -172,7 +172,7 @@ class SumMetric(Metric):
         return jax.tree_map(lambda x, y: x + y, self, other)
 
     def reduce(self: M) -> M:
-        return jax.tree_map(lambda x: jnp.sum(x, axis=0), self)
+        pass
 
 
 class IndexedMetric(Metric):
@@ -194,7 +194,7 @@ class IndexedMetric(Metric):
         return self.replace(metric=self.metric.reset())
 
     def reduce(self) -> "IndexedMetric":
-        return self.replace(metric=self.metric.reduce())
+        pass
 
     def merge(self, other: Metric) -> "IndexedMetric":
         if not isinstance(other, IndexedMetric):
@@ -257,4 +257,4 @@ class RenameArguments(tp.Generic[M], Metric):
         return self.replace(metric=self.metric.merge(other.metric))
 
     def reduce(self: "RenameArguments[M]") -> "RenameArguments[M]":
-        return self.replace(metric=self.metric.reduce())
+        pass

@@ -16,11 +16,7 @@ class EnumStr(str, Enum):
 
     @classmethod
     def from_str(cls, value: str) -> Optional["EnumStr"]:
-        statuses = [status for status in dir(cls) if not status.startswith("_")]
-        for st in statuses:
-            if st.lower() == value.lower():
-                return getattr(cls, st)
-        return None
+        pass
 
     def __eq__(self, other: Union[str, "EnumStr", None]) -> bool:  # type: ignore
         other = other.value if isinstance(other, Enum) else str(other)

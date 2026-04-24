@@ -34,41 +34,17 @@ class Reduction(Enum):
 
     @classmethod
     def all(cls):
-        return (
-            # cls.AUTO,
-            cls.NONE,
-            cls.SUM,
-            cls.SUM_OVER_BATCH_SIZE,
-        )
+        pass
 
     @classmethod
     def validate(cls, key):
-        if key not in cls.all():
-            raise ValueError("Invalid Reduction Key %s." % key)
+        pass
 
 
 def reduce_loss(
     values: jax.Array, sample_weight: tp.Optional[jax.Array], weight, reduction
 ) -> jax.Array:
-    values = jnp.asarray(values)
-
-    if sample_weight is not None:
-        # expand `sample_weight` dimensions until it has the same rank as `values`
-        while sample_weight.ndim < values.ndim:
-            sample_weight = sample_weight[..., jnp.newaxis]
-
-        values *= sample_weight
-
-    if reduction == Reduction.NONE:
-        loss = values
-    elif reduction == Reduction.SUM:
-        loss = jnp.sum(values)
-    elif reduction == Reduction.SUM_OVER_BATCH_SIZE:
-        loss = jnp.sum(values) / jnp.prod(jnp.array(values.shape))
-    else:
-        raise ValueError(f"Invalid reduction '{reduction}'")
-
-    return loss * weight
+    pass
 
 
 class Loss(ABC):
@@ -162,7 +138,7 @@ class Loss(ABC):
         Returns:
             A IndexedLoss instance
         """
-        return IndexedLoss(self, kwargs)
+        pass
 
     def rename_arguments(self, **kwargs: str) -> "MapArgsLoss":
         """
@@ -182,7 +158,7 @@ class Loss(ABC):
         Returns:
             A MapArgsLoss instance
         """
-        return MapArgsLoss(self, kwargs)
+        pass
 
 
 class IndexedLoss(Loss):

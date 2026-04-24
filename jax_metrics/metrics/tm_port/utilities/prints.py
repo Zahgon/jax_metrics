@@ -9,8 +9,7 @@ from jax_metrics.metrics import _logger as log
 def rank_zero_only(fn: Callable) -> Callable:
     @wraps(fn)
     def wrapped_fn(*args: Any, **kwargs: Any) -> Any:
-        if rank_zero_only.rank == 0:  # type: ignore
-            return fn(*args, **kwargs)
+        pass
 
     return wrapped_fn
 
@@ -20,15 +19,15 @@ rank_zero_only.rank = getattr(rank_zero_only, "rank", int(os.environ.get("LOCAL_
 
 
 def _warn(*args: Any, **kwargs: Any) -> None:
-    warnings.warn(*args, **kwargs)
+    pass
 
 
 def _info(*args: Any, **kwargs: Any) -> None:
-    log.info(*args, **kwargs)
+    pass
 
 
 def _debug(*args: Any, **kwargs: Any) -> None:
-    log.debug(*args, **kwargs)
+    pass
 
 
 rank_zero_debug = rank_zero_only(_debug)
